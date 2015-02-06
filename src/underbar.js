@@ -10,7 +10,7 @@
         return val;
     };
 
-    /**
+    /*
      * COLLECTIONS
      * ===========
      *
@@ -77,24 +77,48 @@
                 result = index;
             }
         });
-
         return result;
     };
 
     // Return all elements of an array that pass a truth test.
     _.filter = function (collection, test) {
+        var filterArr = [];
+        _.each(collection, function (item) {
+            if (test(item) === true) {
+                filterArr.push(item);
+            }
+        });
+        return filterArr;
     };
 
     // Return all elements of an array that don't pass a truth test.
     _.reject = function (collection, test) {
+        var rejectArr = [];
+        _.each(collection, function (item) {
+            if(test(item) !== true) {
+                rejectArr.push(item);
+            }
+        });
+        return rejectArr;
         // TIP: see if you can re-use _.filter() here, without simply
         // copying code in and modifying it
     };
 
     // Produce a duplicate-free version of the array.
     _.uniq = function (array) {
+        var uniqArr = [];
+        _.each(array, function (item) {
+            for (var i in uniqArr) {
+                if (uniqArr[i] === item) {
+                    break
+                } else if (uniqArr.length - 1 !== i){
+                    continue
+                };
+            uniqArr.push(item);
+            };
+        });
+        return uniqArr;
     };
-
 
     // Return the results of applying an iterator to each element.
     _.map = function (collection, iterator) {
@@ -147,6 +171,14 @@
     //   }); // should be 5, regardless of the iterator function passed in
     //          No accumulator is given so the first element is used.
     _.reduce = function (collection, iterator, accumulator) {
+        var tally;
+        if (accumulator !== undefined) {
+            tally = accumulator;
+        }
+        _.each(collection, function (item) {
+            iterator(tally, item);
+        });
+        return tally;
     };
 
     // Determine if the array or object contains a given value (using `===`).
