@@ -109,7 +109,7 @@
         var uniqArr = [];
         _.each(array, function (item) {
                 if (_.contains(uniqArr, item) === false) {
-                    uniqArr.push(item)
+                    uniqArr.push(item);
                 };
         });
         return uniqArr;
@@ -167,7 +167,6 @@
     //          No accumulator is given so the first element is used.
     _.reduce = function (collection, iterator, accumulator) {
 
-
         if (accumulator === undefined) {
             accumulator = collection.shift();
         };
@@ -175,7 +174,9 @@
         _.each(collection, function (item) {
             accumulator = iterator(accumulator, item);
         });
+        
         return accumulator;
+        
     };
 
     // Determine if the array or object contains a given value (using `===`).
@@ -193,12 +194,34 @@
 
     // Determine whether all of the elements match a truth test.
     _.every = function (collection, iterator) {
+        var truthy = true;
+        if(iterator == undefined) {
+            iterator = _.identity;
+        }
+        for(var i = 0; i < collection.length; i++) {
+            if(iterator(collection[i]) == false || iterator(collection[i]) == undefined) {
+                truthy = false;
+                break
+            };
+        };
+        return truthy;
         // TIP: Try re-using reduce() here.
     };
 
     // Determine whether any of the elements pass a truth test. If no iterator is
     // provided, provide a default one
     _.some = function (collection, iterator) {
+                var truthy = false;
+        if(iterator == undefined) {
+            iterator = _.identity;
+        }
+        for(var i = 0; i < collection.length; i++) {
+            if(iterator(collection[i])) {
+                truthy = true;
+                break
+            };
+        };
+        return truthy;
         // TIP: There's a very clever way to re-use every() here.
     };
 
