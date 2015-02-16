@@ -84,7 +84,7 @@
     _.filter = function (collection, test) {
         var filterArr = [];
         _.each(collection, function (item) {
-            if (test(item) === true) {
+            if (test(item)) {
                 filterArr.push(item);
             }
         });
@@ -95,7 +95,7 @@
     _.reject = function (collection, test) {
         var rejectArr = [];
         _.each(collection, function (item) {
-            if(test(item) !== true) {
+            if(!test(item)) {
                 rejectArr.push(item);
             }
         });
@@ -259,8 +259,8 @@
         for (var i = 1; i < arguments.length; i++) {
             for (var j in arguments[i]){
                 if (obj[j] === undefined) {
-                obj[j] = arguments[i][j];
-            };
+                    obj[j] = arguments[i][j];
+                };
             };
         };
     return obj;
@@ -307,6 +307,16 @@
     // already computed the result for the given argument and return that value
     // instead if possible.
     _.memoize = function (func) {
+        var alreadyCalled = false;
+        var result;
+
+        return function() {
+            if(!alreadyCalled){
+                result = func.apply(this, arguments);
+                alreadyCalled = true;
+            }
+            return result;
+        };
     };
 
     // Delays a function for the given number of milliseconds, and then calls
@@ -316,6 +326,7 @@
     // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
     // call someFunction('a', 'b') after 500ms
     _.delay = function (func, wait) {
+        return func(arguments.slice(2, arguments.length));
     };
 
 
