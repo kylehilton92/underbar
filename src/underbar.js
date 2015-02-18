@@ -310,9 +310,10 @@
         var alreadyCalled = {};
         var result;
 
-        return function(keys) {
-            if(!alreadyCalled.hasOwnProperty(keys)){
-                result = func.apply(this, [keys]);
+        return function(key) {
+            var keys = [key];
+            if(!alreadyCalled.hasOwnProperty([keys])){
+                result = func.apply(this, arguments);
                 alreadyCalled[keys] = result;
             } else {
                 result = alreadyCalled[keys];
@@ -329,9 +330,11 @@
     // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
     // call someFunction('a', 'b') after 500ms
     _.delay = function (func, wait) {
-        return func(arguments.slice(2, arguments.length));
+        var args = Array.prototype.slice.call(arguments, 2);
+        return window.setTimeout(function(args) {
+            return func.call(args);
+        }, wait);
     };
-
 
     /**
      * ADVANCED COLLECTION OPERATIONS
