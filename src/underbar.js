@@ -311,9 +311,10 @@
         var alreadyCalled = {};
         var result;
 
-        return function(keys) {
-            if(!alreadyCalled.hasOwnProperty(keys)){
-                result = func.apply(this, [keys]);
+        return function(key) {
+            var keys = [key];
+            if(!alreadyCalled.hasOwnProperty([keys])){
+                result = func.apply(this, arguments);
                 alreadyCalled[keys] = result;
             } else {
                 result = alreadyCalled[keys];
@@ -331,8 +332,8 @@
     // call someFunction('a', 'b') after 500ms
     _.delay = function (func, wait) {
         var args = Array.prototype.slice.call(arguments, 2);
-        return window.setTimeout(function(args){
-            return func(args);
+        setTimeout(function(){
+            func.call(args);
         }, wait);
     };
 
@@ -351,8 +352,8 @@
         var shuff = [];
         var iterations = array.length;
         for (var i = 0; i < iterations.length; i++) {
-            index = Math.floor(Math.random() * (array.length - shuff.length - 1));
-            shuffled.push(array[index]);
+            index = Math.floor(Math.random() * (array.length - shuff.length));
+            shuff.push(array[index]);
         };
         return shuff;
     };
