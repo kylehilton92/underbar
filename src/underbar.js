@@ -333,10 +333,9 @@
     _.delay = function (func, wait) {
         var args = Array.prototype.slice.call(arguments, 2);
         setTimeout(function(){
-            func.call(args);
+            func.apply(null,args);
         }, wait);
     };
-
 
     /**
      * ADVANCED COLLECTION OPERATIONS
@@ -349,11 +348,12 @@
     // input array. For a tip on how to make a copy of an array, see:
     // http://mdn.io/Array.prototype.slice
     _.shuffle = function (array) {
-        var shuff = [];
-        var iterations = array.length;
-        for (var i = 0; i < iterations.length; i++) {
-            index = Math.floor(Math.random() * (array.length - shuff.length));
-            shuff.push(array[index]);
+        var length = array.length;
+        var shuff = Array(length);
+        for (var i = 0; i < length; i++) {
+            var j = Math.floor(Math.random() *  (i + 1));
+            if (j !== i) {shuff[i] = array[j]};
+            shuff[j] = array[i];
         };
         return shuff;
     };
